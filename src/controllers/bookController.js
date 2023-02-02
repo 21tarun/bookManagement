@@ -84,7 +84,7 @@ const createBook = async function (req, res) {
         if (!isValid(data.subcategory)) return res.status(400).send({ status: false, message: "subcategory is mandatory" })
         data.subcategory = data.subcategory.trim()
         console.log(files)
-        if (files && files.length > 0) {
+        if (files.length > 0) {
             var fileLink = await uploadFile(files[0])
             if (!fileLink) {
                 return res.status(404).send({ status: false, message: "no file found" })

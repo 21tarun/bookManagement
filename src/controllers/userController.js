@@ -32,15 +32,16 @@ const createUser = async function (req, res){
         if(checkPhone) return res.status(400).send({status:false, message: "phone Number already exist"})
         
         //check validation for email ---------------------------------------------------------------
-        if (!validator.isEmail(email)) return res.status(400).send({ status: false, msg: "please enter valid email address!" }) // email must be have @ and .com 
+        if (!validator.isEmail(email)) return res.status(400).send({ status: false, message: "please enter valid email address!" }) // email must be have @ and .com 
 
         let checkEmail = await userModel.findOne({ email: email })
         if (checkEmail) return res.status(400).send({ status: false, message: "email is already exist" })
 
         // check validation for password---------------------------------------------------------------
-        if (!(password.match(/(?=.{8,15})/))) return res.status(400).send({ status: false, error: "Password should be of atleast 8 charactors" }) // passsword must be min 8 and max 15//
-        if (!(password.match(/.*[a-zA-Z]/))) return res.status(400).send({ status: false, error: "Password should contain alphabets" }) // password must be alphabetic //
-        if (!(password.match(/.*\d/))) return res.status(400).send({ status: false, error: "Password should contain digits" })// we can use number also //
+        if(password.length<8 || password.length>15) return res.status(400).send({status:false,message:"password length should be in the range 8-15 "})
+        
+        // if (!(password.match(/.*[a-zA-Z]/))) return res.status(400).send({ status: false, error: "Password should contain alphabets" }) // password must be alphabetic //
+        // if (!(password.match(/.*\d/))) return res.status(400).send({ status: false, error: "Password should contain digits" })// we can use number also //
 
         let savedData = await userModel.create(data)
         return res.status(201).send({status: true, message: "Data created SuccesFully", data: savedData})
@@ -56,8 +57,8 @@ const createUser = async function (req, res){
 const login = async function (req, res){
     try {
         let { email, password} = req.body
-        if(!isValid(email)) return res.status(400).send({status: false, msg: "please enter the email to login"})
-        if(!isValid(password)) return res.status(400).send({status:false, msg: "please enter the password to login"})
+        if(!isValid(email)) return res.status(400).send({status: false, message: "please enter the email to login"})
+        if(!isValid(password)) return res.status(400).send({status:false, message: "please enter the password to login"})
 
         
         let  userLogin = await userModel.findOne({email: email, password: password}) 
