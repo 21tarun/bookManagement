@@ -97,10 +97,10 @@ const createBook = async function (req, res) {
         data.releasedAt = moment().format('YYYY-MM-DD')// adding a current  date in releasedAt
 
         let savedata = await bookModel.create(data)
-        res.status(201).send({ status: true, data: savedata })
+        res.status(201).send({ status: true,message: 'Success', data: savedata })
     }
     catch (error) {
-        res.status(500).send({ status: false, message: error.message })
+        res.status(500).send({ status: false,message: error.message })
     }
 }
 // get books -----------------------------------------------------------------------------------------------
